@@ -358,24 +358,24 @@ class Connection:
         socket = self.context.socket(zmq.REQ)  # establish socket
         socket.connect("tcp://" + self.url)
 
-        self.to_json(message)  # convert message into json object
-        print(message),
-        socket.send_json(message)  # send message
+        json_message = self.to_json(message)  # convert message into json object
+        socket.send_json(json_message)  # send message
 
         answer = socket.recv_json()  # wait for response
         self.check_errors(answer)
         return answer
 
     def to_json(self, message):
+        json_message = dict()
         for key in message:
             if type(message[key]) == dict:
                 jsonfyed_message = self.to_json(message[key])
-                message[key] = jsonfyed_message
-            if type(key) == tuple:
-                val = message[key]
-                del message[key]
-                message[str(key)] = val
-        return message
+                json_message[key] = jsonfyed_message
+            elif type(key) == tuple:
+                json_message[str(key)] = message[key]
+            else:
+                json_message[key] = message[key]
+        return json_message
 
     def check_errors(self, answer):
         """Check if the message from the server contains an authentication or backend exception. If there occurs an
