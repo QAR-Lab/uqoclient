@@ -4,6 +4,11 @@ UQO is an optimization framework developed by the QAR-Lab of the LMU Munich.
 
 # Setup
 ---
+To install UQO simply do:
+```
+   pip install uqoclient
+   ```
+
 To be able to connect to the UQO servers, you have to create a config object. There are two possibilities to do so:
 
 1. Create the config object directly in the code:
@@ -31,7 +36,10 @@ To be able to connect to the UQO servers, you have to create a config object. Th
    ```
 In the examples above please replace SERVER_IP and SERVER_PORT with the ip and port of the UQO server. Also replace YOUR_TOKEN with your personal UQO token.
  
-
+###
+FAQ
+---
+Required Python Version: >= 3.7
 
 ### Error messages while solving
 
