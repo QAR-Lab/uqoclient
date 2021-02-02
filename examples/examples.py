@@ -104,7 +104,7 @@ def dwave_example_qubo(config):
     # -----------
     # These functions will print the received information in different ways
     # -----------
-    answer.print_solutions()
+    # answer.print_solutions()
     # answer.print_energies()
     # answer.print_num_occurrences()
     answer.print_solutions_nice()
