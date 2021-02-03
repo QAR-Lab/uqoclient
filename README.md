@@ -35,7 +35,15 @@ To be able to connect to the UQO servers, you have to create a config object. Th
    config = Config(config_path="Path\to\the\configfile")
    ```
 In the examples above please replace SERVER_IP and SERVER_PORT with the ip and port of the UQO server. Also replace YOUR_TOKEN with your personal UQO token.
- 
+
+###
+Current State of UQO
+---
+Although UQO can already be used for a lot of tasks, it is still work in progress. You may very well run into problems where you 
+would like to use a feature which has not yet been implemented or is not working as intended due to bugs. In this case please let me know
+about the exact problem or the exact feature you want to use, so I can fix / implement it.
+
+You find my E-mail at the bottom of this ReadMe.
 ###
 FAQ
 ---
