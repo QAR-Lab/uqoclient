@@ -6,7 +6,7 @@ UQO is an optimization framework developed by the QAR-Lab of the LMU Munich.
 ---
 To install UQO simply do:
 ```
-   pip install uqoclient
+   pip install uqo
    ```
 
 To be able to connect to the UQO servers, you have to create a config object. There are two possibilities to do so:
