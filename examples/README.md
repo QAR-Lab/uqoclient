@@ -43,12 +43,12 @@ answer = Ising(config, example_ising_h, example_ising_J).with_platform("qbsolv")
 Of course you can also add solver parameters:
 ```
 from uqo.client.config import Config
-from uqo.Problem import Problem
+from uqo.Problem import Qubo
 
 config = Config(configpath="config.json")
 connection = config.create_connection()
 
 test_dict = {"test_parameter": {(0, 1): 5, (1, 2): 3}}
-answer = Problem.Qubo(config, example_qubo).with_platform("qbsolv").with_params(**test_dict).solve(100)
+answer = Qubo(config, example_qubo).with_platform("qbsolv").with_params(**test_dict).solve(100)
 ```
 For more examples please check the examples.py
