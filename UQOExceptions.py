@@ -66,7 +66,7 @@ class AuthAdminFailedException(UQOException):
 
 class GenericAuthException(UQOException):
     def __init__(self):
-        message = "\n\nAn unexpected error occured\nPlease try again later!\n\nIn case of "
+        message = "\n\nAn unexpected error occured\nPlease try again later!\n\nShould this problem still occur in some hours please contact the developer: sebastian.zielinski@ifi.lmu.de"
         UQOException.__init__(self, message)
 
 
