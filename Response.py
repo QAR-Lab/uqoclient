@@ -69,5 +69,4 @@ class DWaveResponse(Response):
     def __init__(self, dwave_answer):
         sampleset = SampleSet.from_serializable(dwave_answer)
         Response.__init__(self, sampleset)
-        # self.timing = dwave_answer["timing"]
-        # self.used_embedding = dwave_answer["used_embedding"]
+        self.timing = self.sampleset.info["timing"]
