@@ -364,9 +364,7 @@ class Connection:
         socket.curve_publickey = client_public
 
         # The client must know the server's public key to make a CURVE connection.
-        server_public_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), "uqo_public.key")
-        server_public, _ = zmq.auth.load_certificate(server_public_file)
-        socket.curve_serverkey = server_public
+        socket.curve_serverkey = "NiXFs[iDdcOz/o!jPUI9uLg6VMS]!x:g4{=KmHa%"
 
         socket.connect("tcp://" + self.url)
 
