@@ -42,6 +42,8 @@ class Config:
         if "method" in kwargs and "credentials" in kwargs:
             self.method = kwargs["method"]
             self.credentials = kwargs["credentials"]
+        if "private_key_file" in kwargs:
+            self.private_key_file = kwargs["private_key_file"]
         elif "configpath" in kwargs:
             # authentication with config file
             with open(kwargs["configpath"]) as configfile:
@@ -49,7 +51,8 @@ class Config:
                 self.method = config["method"]
                 self.credentials = config["credentials"]
                 self.endpoint = config["endpoint"]
+                self.private_key_file = config["private_key_file"]
 
     def create_connection(self):
         """Create a connection object containing the configuration data of the user. """
-        return Connection(self.endpoint, self.method, self.credentials)
+        return Connection(self.endpoint, self.method, self.credentials, self.private_key_file)

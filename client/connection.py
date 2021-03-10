@@ -1,4 +1,5 @@
 import zmq
+import os
 from .. import Problem
 from .. import Response
 from .. UQOExceptions import *
@@ -65,7 +66,7 @@ class Connection:
         Print the time a user has left for computation on a d-wave platform.
     """
 
-    def __init__(self, url, auth_method, credentials):
+    def __init__(self, url, auth_method, credentials, private_key_file):
         """Initialize the connection object. Fill the config data (url, auth_method and credentials) by using the
         passed arguments.
 
@@ -85,6 +86,7 @@ class Connection:
         self.preferred_platform = None
         self.task = None
         self.solver = None
+        self.private_key_file = private_key_file
         self.context = zmq.Context().instance()
 
     # ----------------------- PING MESSAGE ----------------------- #
@@ -356,6 +358,16 @@ class Connection:
         """
 
         socket = self.context.socket(zmq.REQ)  # establish socket
+
+        client_public, client_secret = zmq.auth.load_certificate(self.private_key_file)
+        socket.curve_secretkey = client_secret
+        socket.curve_publickey = client_public
+
+        # The client must know the server's public key to make a CURVE connection.
+        server_public_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), "uqo_public.key.key")
+        server_public, _ = zmq.auth.load_certificate(server_public_file)
+        socket.curve_serverkey = server_public
+
         socket.connect("tcp://" + self.url)
 
         json_message = self.to_json(message)  # convert message into json object

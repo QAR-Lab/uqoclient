@@ -2,7 +2,6 @@
 Generate client and server CURVE certificate files then move them into the
 appropriate store directory, private_keys or public_keys.
 In practice this would be done by hand or some out-of-band process.
-Author: Chris Laws
 """
 
 import os
