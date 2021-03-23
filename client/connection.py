@@ -1,4 +1,5 @@
 import zmq
+import zmq.auth
 import os
 from .. import Problem
 from .. import Response
