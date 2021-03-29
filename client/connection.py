@@ -222,6 +222,8 @@ class Connection:
                     answer = Response.QBSolveResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "DWaveSolver":
                     answer = Response.DWaveResponse(answer["solver_details"]["answer"])
+                elif answer["solver"] == "FujitsuDAUSolver":
+                    answer = Response.FujitsuDAUResponse(answer["solver_details"]["answer"])
                 return answer
             else:
                 self.check_errors(answer)
@@ -261,11 +263,11 @@ class Connection:
             if answer["status"] == "success":
                 if answer["solver"] == "QBsolvSolver":
                     answer = Response.QBSolveResponse(answer["solver_details"]["answer"])
-                    return answer
                 elif answer["solver"] == "DWaveSolver":
                     answer = Response.DWaveResponse(answer["solver_details"]["answer"])
-
-                    return answer
+                elif answer["solver"] == "FujitsuDAUSolver":
+                    answer = Response.FujitsuDAUResponse(answer["solver_details"]["answer"])
+                return answer
             else:
                 print(answer["status"])
                 raise QBSolveException(answer["message"])
