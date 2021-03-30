@@ -120,3 +120,10 @@ class MissingPlatformException(UQOException):
         for platform in error_details["available_platforms"]:
             message += "'" + platform + "'"
         UQOException.__init__(self, message)
+
+class InvalidPlatformException(UQOException):
+    def __init__(self, error_details):
+        message ="\n\nThe platform you specified in your request is not valid.\n"
+        UQOException.__init__(self, message)
+
+

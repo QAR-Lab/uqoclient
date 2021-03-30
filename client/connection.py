@@ -444,6 +444,8 @@ class Connection:
                 raise InvalidSolverException(answer["error_details"])
             elif error_type == "MissingPlatform":
                 raise MissingPlatformException(answer["error_details"])
+            elif error_type == "InvalidPlatform":
+                raise InvalidPlatformException(answer["error_details"])
 
     def show_quota(self):
         """Print the remaining quota (the time you can spend on a DWave platform in microseconds). """
