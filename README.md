@@ -11,13 +11,32 @@ To install UQO simply do:
 
 To be able to connect to the UQO servers, you have to create a config object. There are two possibilities to do so:
 
-1. Create the config object directly in the code:
+1. Generate private/public keys
+
+    UQO uses elliptic curve cryptography to securely communicate with the UQO servers. Therefore you have to generate your
+    private and public key first, before you can start using UQO. This is done as follows:
+
+    ```
+      import os
+      from uqo.generate_certificates import generate_certificates
+      generate_certificates(os.path.dirname(os.path.realpath(__file__)))
+    ```
+    
+    This will generate 3 folders ("certificates", "private_keys" and "public_keys") in your current working directory.
+    The "certificates" folder is used as a temporary directory and should be empty after the process completed. You can
+    safely delete this folder. 
+
+
+2. Create the config object directly in the code:
    ```
    ip = "SERVER_IP:SERVER_PORT"
    token = "YOUR_TOKEN"
-   config = Config(method="token", credentials=token, endpoint=ip)
+   private_key_file = "PATH_TO_YOUR_PRIVATE_KEY_FILE"
+   config = Config(method="token", credentials=token, endpoint=ip, configpath=private_key_file)
    ```
-2. Use a config file
+   
+   Replace "PATH_TO_YOUR_PRIVATE_KEY_FILE" with the actual path to the clien.key_secret file you generated in step 1.
+3. Use a config file
    
    Create a config.json with the following structure:
     
@@ -25,8 +44,13 @@ To be able to connect to the UQO servers, you have to create a config object. Th
    {
         "method": "token",
         "endpoint": "SERVER_IP:SERVER_PORT",
-        "credentials": "YOUR_TOKEN"
+        "credentials": "YOUR_TOKEN",
+        "private_key_file": "PATH_TO_YOUR_PRIVATE_KEY_FILE"
    }
+   
+   Replace "PATH_TO_YOUR_PRIVATE_KEY_FILE" with the actual path to the clien.key_secret file you generated in step 1.
+
+   
    ```
    You can then use this config file as follows:
     
