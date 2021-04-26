@@ -208,3 +208,105 @@ def dwave_example_qubo_with_custom_embedding(config):
     # answer.print_num_occurrences()
 
     answer.print_solutions_nice()
+
+
+def fujistu_example_qubo(config):
+    """ Solve the QUBO example with Fujitsu DAU.
+
+    Parameters
+    ----------
+    config
+        The config object that contains the users configuration data
+    """
+
+    solver = "CPU"  # CPU or DAU
+    number_runs = 16
+    parameters = {
+        # default parameters:
+        "number_iterations": 500,           # total number of iterations per run
+        "temperature_start": 1000.0,        # start temperature as float value
+        "temperature_end": 1.0,             # end temperature as float value or None
+        "temperature_mode": 0,              # 0, 1, or 2 to define the cooling curve
+                                            # 0: reduce temperature by factor (1-temperature_decay) every temperature_interval steps
+                                            # 1: reduce temperature by factor (1-temperature_decay*temperature) every temperature_interval steps
+                                            # 2: reduce temperature by factor (1-temperature_decay*temperature^2) every temperature_interval steps
+        "temperature_decay": 0.001,         # decay per step if temperature_end is None
+        "temperature_interval": 100,        # number of iterations keeping temperature constant
+        "offset_increase_rate": 0.0,        # increase of dynamic offset when no bit selected, set to 0.0 to switch off dynamic energy feature
+        "solution_mode": "COMPLETE",        # COMPLETE returns all runs best configuration, QUICK returns overall best configuration only
+        "optimization_method": "annealing",  # annealing or parallel tempering are supported methods
+        "number_replicas": 26,              # number of replicas for parallel tempering mode
+        "annealer_version": 2,              # Digital Annealer version
+        "guidance_config": {},              # list of variable values that to be set for DA as a starting values of variables for annealing process for each run
+        "auto_tuning": 0,                    # EXPERIMENTAL! options of automatic tuning the QUBO
+        "bit_precision": 16,                 # bit precision (DAU version 2)
+        "connection_mode": "CMODE_ASYNC"    # Mode can be CMODE_ASYNC (default) or CMODE_SYNC
+        }
+    answer = Problem.Qubo(config, example_qubo).with_platform("fujitsu").with_solver(solver).with_params(**parameters).solve(number_runs)
+
+    # -----------
+    # These calls return arrays containing the raw information in lists
+    # -----------
+    # answer.solutions
+    # answer.energies
+    # answer.num_occurrences
+
+    # -----------
+    # These functions will print the received information in different ways
+    # -----------
+    # answer.print_solutions()
+    # answer.print_energies()
+    # answer.print_num_occurrences()
+    answer.print_solutions_nice()
+
+
+def fujistu_example_ising(config):
+    """ Fujitsu DAU can only solve QUBOs. Translate Ising to QUBO and send the QUBO to the Fujitsu DAU. There may
+    be an offset, that have to be applied to the energies to obtain the correct Ising energies.
+
+    Parameters
+    ----------
+    config
+        The config object that contains the users configuration data
+    """
+
+    solver = "CPU"  # CPU or DAU
+    number_runs = 16  # number of stochastically independent runs
+    parameters = {
+        # default parameters:
+        "number_iterations": 500,           # total number of iterations per run
+        "temperature_start": 1000.0,        # start temperature as float value
+        "temperature_end": 1.0,             # end temperature as float value or None
+        "temperature_mode": 0,              # 0, 1, or 2 to define the cooling curve
+                                            # 0: reduce temperature by factor (1-temperature_decay) every temperature_interval steps
+                                            # 1: reduce temperature by factor (1-temperature_decay*temperature) every temperature_interval steps
+                                            # 2: reduce temperature by factor (1-temperature_decay*temperature^2) every temperature_interval steps
+        "temperature_decay": 0.001,         # decay per step if temperature_end is None
+        "temperature_interval": 100,        # number of iterations keeping temperature constant
+        "offset_increase_rate": 0.0,        # increase of dynamic offset when no bit selected, set to 0.0 to switch off dynamic energy feature
+        "solution_mode": "COMPLETE",        # COMPLETE returns all runs best configuration, QUICK returns overall best configuration only
+        "optimization_method": "annealing",  # annealing or parallel tempering are supported methods
+        "number_replicas": 26,              # number of replicas for parallel tempering mode
+        "annealer_version": 2,              # Digital Annealer version
+        "guidance_config": {},              # list of variable values that to be set for DA as a starting values of variables for annealing process for each run
+        "auto_tuning": 0,                    # EXPERIMENTAL! options of automatic tuning the QUBO
+        "bit_precision": 16,                 # bit precision (DAU version 2)
+        "connection_mode": "CMODE_ASYNC"    # Mode can be CMODE_ASYNC (default) or CMODE_SYNC
+        }
+    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("fujitsu").with_solver(solver).with_params(**parameters).solve(number_runs)
+
+    # -----------
+    # These calls return arrays containing the raw information in lists
+    # -----------
+    # answer.solutions
+    # answer.energies
+    # answer.num_occurrences
+    # answer.apply_energy_offset(offset)
+    # answer.print_energies()
+    # -----------
+    # These functions will print the received information in different ways
+    # -----------
+    # answer.print_solutions()
+    # answer.print_energies()
+    # answer.print_num_occurrences()
+    answer.print_solutions_nice()
