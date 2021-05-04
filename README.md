@@ -1,6 +1,6 @@
 #UQO - You, Quantum and Optimization
 ---
-UQO is an optimization framework developed by the [QAR-Lab of the LMU Munich](https://qarlab.de). 
+UQO is an optimization framework developed by the [QAR-Lab of the LMU Munich](https://qar-lab.de). 
 
 # Setup
 ---
