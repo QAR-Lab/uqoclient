@@ -56,6 +56,7 @@ class Problem:
         self.solver = None
         self.platform = None
         self.embedding = None
+        self.initial = None
         self.connection = config.create_connection()
 
     # ------------------ Set attributes ------------------ #
@@ -115,6 +116,14 @@ class Problem:
         """
         dnx.draw_pegasus_embedding(dnx.pegasus_graph(11), emb=self.embedding, node_size=3, width=.3)
         plt.savefig(output_path)
+
+    # ---------------- find initial state ---------------- #
+
+    def find_initial_state(self, times=1):
+        """Call the connections find_initial_state method for reverse annealing process. """
+        self.uq_params.update({"num_repeats": times})
+        self.initial = self.connection.find_initial_state(self)
+        return self.initial
 
     # ------------------ Solve problems ------------------ #
 

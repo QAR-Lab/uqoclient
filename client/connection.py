@@ -193,6 +193,31 @@ class Connection:
 
         return embedding
 
+    # --------------- FIND INITIAL STATE MESSAGE ---------------- #
+
+    def find_initial_state(self, problem):
+        """ Execute the solve method for finding an initial state for the reverse annealing process.
+        To not get stuck in a local minimum, take a solution which is 5% distant from lowest-energy solution as
+        the initial state for the following reverse annealing call. """
+
+        answer = Response.DWaveResponse
+        if isinstance(problem, Problem.Qubo):
+            answer = self.solve_qubo(problem)
+        elif isinstance(problem, Problem.Ising):
+            answer = self.solve_ising(problem)
+
+        # take a solution which is 5% distant from lowest-energy solution
+        i5 = int(5.0 / 95 * len(answer.solutions))
+        initial = dict(answer.solutions[i5])
+
+        initial_parsed = {}
+        for key in initial:
+            initial_parsed[int(key)] = int(initial[key])
+
+        print("Calculated initial state: " + str(initial_parsed))
+
+        return initial_parsed
+
     # ----------------------- SOLVE QUBOS ----------------------- #
 
     def solve_qubo(self, problem):
@@ -228,7 +253,7 @@ class Connection:
             else:
                 self.check_errors(answer)
                 print(answer["status"])
-
+                print(answer)
                 if answer["type"] == "MissingTask":
                     print("Task Fehlt!")
                 elif answer["type"] == "InvalidTask":
@@ -270,6 +295,7 @@ class Connection:
                 return answer
             else:
                 print(answer["status"])
+                print(answer)
                 raise QBSolveException(answer["message"])
 
     # ----------------------- GET DWAVE SOLVERS ----------------------- #
