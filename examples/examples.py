@@ -1,6 +1,8 @@
 from ..client.connection import Connection
 from . import graph_coloring_example as graphcoloring
 from .. import Problem
+from matplotlib import pyplot as plt
+import numpy as np
 
 # Example QUBO with some reward and penalty values
 example_qubo = {(0, 0): -2, (1, 1): -2, (2, 2): -2, (3, 3): -2, (4, 4): -2, (5, 5): -2,
@@ -170,9 +172,9 @@ def find_chimera_embedding_example(config):
 
 
 def find_pegasus_embedding_example(config):
-    """Find a possible Pegasus embedding by calling the Advantage_system1.1 solver from DWave and save it to
+    """Find a possible Pegasus embedding by calling the Advantage_system4.1 solver from DWave and save it to
     embedding.pdf. """
-    problem = Problem.Qubo(config, example_qubo).with_platform("dwave").with_solver("Advantage_system1.1")
+    problem = Problem.Qubo(config, example_qubo).with_platform("dwave").with_solver("Advantage_system4.1")
     # Note: If you generate an embedding via problem.find_chimera_embedding(), the embedding will be saved in the
     #       variable problem.embedding - you can directly access, view and save it.
     problem.find_pegasus_embedding()
@@ -182,7 +184,7 @@ def find_pegasus_embedding_example(config):
 def dwave_example_qubo_with_custom_embedding(config):
     """Solve an example QUBO problem with a given embedding. """
 
-    problem = Problem.Qubo(config, example_qubo).with_platform("dwave").with_solver("Advantage_system1.1")
+    problem = Problem.Qubo(config, example_qubo).with_platform("dwave").with_solver("Advantage_system4.1")
 
     # Note: If you generate an embedding via problem.find_chimera_embedding(), the embedding will be saved in the
     #       variable problem.embedding - you can directly access, view and save it.
@@ -213,20 +215,19 @@ def dwave_example_qubo_with_custom_embedding(config):
 def dwave_example_qubo_reverse_annealing(config):
     """ Solve a QUBO with reverse annealing (by optimizing a given solution).
 
-    1. `initial_state` specifies the classical state at which the reverse anneal should start. An initial state has the
-        form {0: 1, 1: 0, 2: 0, 3: 1, 4: 0, 5: 0}
+    1. `initial_state` specifies the classical state at which the reverse anneal should start. An initial state could
+        look like this: {0: 1, 1: 0, 2: 0, 3: 1, 4: 0, 5: 0}
         2 possibilities:
         - define a known solution as an initial state
-        - compute an initial state by using forward annealing
-            --> by default we select a sample 5% indexically distant from the lowest-energy solution.
+        - compute an initial state by using forward annealing first
+            --> as recommended we select a sample 5% indexically distant from the lowest-energy solution by default.
     2. `reinitialize_state` specifies whether or not the initial state should be used for every anneal in the request.
         If False, then after the first, each subsequent anneal starts where the previous finished.
     3. `anneal_schedule` defines the annealing schedule that should be followed. A schedule starts at s=1.0, reverses
         to s_target, pauses for hold_time μs and then anneals forward to s=1.0.
-    4. `plot_anneal_schedule` specifies if you want to plot the anneal schedule
     """
 
-    problem = Problem.Qubo(config, example_qubo).with_platform("dwave").with_solver("Advantage_system1.1")
+    problem = Problem.Qubo(config, example_qubo).with_platform("dwave").with_solver("Advantage_system4.1")
 
     # 1. initial state:
     # define a known solution as the initial state:
@@ -242,11 +243,8 @@ def dwave_example_qubo_reverse_annealing(config):
     s_target = 0.45
     hold_time = 80
 
-    # 4. plot_anneal_schedule:
-    plot_anneal_schedule = False
-
     reverse_anneal_params = {'initial_state': initial, 'reinitialize_state': reinitialize_state, 's_target': s_target,
-                             'hold_time': hold_time, 'plot_anneal_schedule': plot_anneal_schedule}
+                             'hold_time': hold_time}
 
     answer = problem.with_params(**reverse_anneal_params).solve(10)
 
@@ -271,17 +269,16 @@ def dwave_example_qubo_reverse_annealing(config):
 def dwave_example_ising_reverse_annealing(config):
     """ Solve an Ising with reverse annealing (by optimizing a given solution).
 
-    1. `initial_state` specifies the classical state at which the reverse anneal should start. An initial state has the
-        form {0: 1, 1: 0, 2: 0, 3: 1, 4: 0, 5: 0}
+    1. `initial_state` specifies the classical state at which the reverse anneal should start. An initial state could
+        look like this: {0: 1, 1: 0, 2: 0, 3: 1, 4: 0, 5: 0}
         2 possibilities:
         - define a known solution as an initial state
-        - compute an initial state by using forward annealing
-            --> by default we select a sample 5% indexically distant from the lowest-energy solution.
+        - compute an initial state by using forward annealing first
+            --> as recommended we select a sample 5% indexically distant from the lowest-energy solution by default.
     2. `reinitialize_state` specifies whether or not the initial state should be used for every anneal in the request.
         If False, then after the first, each subsequent anneal starts where the previous finished.
     3. `anneal_schedule` defines the annealing schedule that should be followed. A schedule starts at s=1.0, reverses
         to s_target, pauses for hold_time μs and then anneals forward to s=1.0.
-    4. `plot_anneal_schedule` specifies if you want to plot the anneal schedule
     """
 
     # 1. initial state:
@@ -289,8 +286,8 @@ def dwave_example_ising_reverse_annealing(config):
     initial = {0: 1, 2: 0, 1: 0, 3: 1, 4: 0, 5: 0}
 
     # or calculate an initial state
-    problem = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("dwave").with_solver("Advantage_system1.1")
-    initial = problem.find_initial_state(10)
+    problem = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("dwave").with_solver("Advantage_system4.1")
+    # initial = problem.find_initial_state(10)
 
     # 2. reinitialize_state:
     reinitialize_state = False
@@ -299,14 +296,10 @@ def dwave_example_ising_reverse_annealing(config):
     s_target = 0.45
     hold_time = 80
 
-    # 4. plot_anneal_schedule:
-    plot_anneal_schedule = False
-
     reverse_anneal_params = {'initial_state': initial, 'reinitialize_state': reinitialize_state, 's_target': s_target,
-                             'hold_time': hold_time, 'plot_anneal_schedule': plot_anneal_schedule}
+                             'hold_time': hold_time}
 
-    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("dwave").with_solver("Advantage_system1.1") \
-        .with_params(**reverse_anneal_params).solve(10)
+    answer = problem.with_params(**reverse_anneal_params).solve(10)
 
     # -----------
     # These calls return arrays containing the raw information in lists
