@@ -32,7 +32,7 @@ To be able to connect to the UQO servers, you have to create a config object. Th
    ip = "SERVER_IP:SERVER_PORT"
    token = "YOUR_TOKEN"
    private_key_file = "PATH_TO_YOUR_PRIVATE_KEY_FILE"
-   config = Config(method="token", credentials=token, endpoint=ip, configpath=private_key_file)
+   config = Config(method="token", credentials=token, endpoint=ip, private_key_file=private_key_file)
    ```
    
    Replace "PATH_TO_YOUR_PRIVATE_KEY_FILE" with the actual path to the clien.key_secret file you generated in step 1.
@@ -48,15 +48,15 @@ To be able to connect to the UQO servers, you have to create a config object. Th
         "private_key_file": "PATH_TO_YOUR_PRIVATE_KEY_FILE"
    }
    
-   Replace "PATH_TO_YOUR_PRIVATE_KEY_FILE" with the actual path to the clien.key_secret file you generated in step 1.
+   Replace "PATH_TO_YOUR_PRIVATE_KEY_FILE" with the actual path to the client.key_secret file you generated in step 1.
 
    
    ```
    You can then use this config file as follows:
     
    ```
-   from uqoclient.client.config import Config
-   config = Config(config_path="Path\to\the\configfile")
+   from uqo.client.config import Config
+   config = Config(configpath="Path\to\the\configfile")
    ```
 In the examples above please replace SERVER_IP and SERVER_PORT with the ip and port of the UQO server. Also replace YOUR_TOKEN with your personal UQO token.
 
