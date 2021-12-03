@@ -206,9 +206,8 @@ class Connection:
         elif isinstance(problem, Problem.Ising):
             answer = self.solve_ising(problem)
 
-        # take a solution which is 5% distant from lowest-energy solution
-        i5 = int(5.0 / 95 * len(answer.solutions))
-        initial = dict(answer.solutions[i5])
+        # take the solution with the lowest energy
+        initial = dict(answer.solutions[0])
 
         initial_parsed = {}
         for key in initial:

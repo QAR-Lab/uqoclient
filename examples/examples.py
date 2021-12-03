@@ -219,8 +219,7 @@ def dwave_example_qubo_reverse_annealing(config):
         look like this: {0: 1, 1: 0, 2: 0, 3: 1, 4: 0, 5: 0}
         2 possibilities:
         - define a known solution as an initial state
-        - compute an initial state by using forward annealing first
-            --> as recommended we select a sample 5% indexically distant from the lowest-energy solution by default.
+        - compute an initial state by using forward annealing
     2. `reinitialize_state` specifies whether or not the initial state should be used for every anneal in the request.
         If False, then after the first, each subsequent anneal starts where the previous finished.
     3. `anneal_schedule` defines the annealing schedule that should be followed. A schedule starts at s=1.0, reverses
@@ -231,10 +230,10 @@ def dwave_example_qubo_reverse_annealing(config):
 
     # 1. initial state:
     # define a known solution as the initial state:
-    initial = {0: 1, 2: 0, 1: 0, 3: 1, 4: 0, 5: 0}
+    # initial = {0: 1, 2: 0, 1: 0, 3: 1, 4: 0, 5: 0}
 
     # or calculate an initial state
-    # initial = problem.find_initial_state(10)
+    initial = problem.find_initial_state(1)
 
     # 2. reinitialize_state:
     reinitialize_state = False
@@ -273,21 +272,21 @@ def dwave_example_ising_reverse_annealing(config):
         look like this: {0: 1, 1: 0, 2: 0, 3: 1, 4: 0, 5: 0}
         2 possibilities:
         - define a known solution as an initial state
-        - compute an initial state by using forward annealing first
-            --> as recommended we select a sample 5% indexically distant from the lowest-energy solution by default.
+        - compute an initial state by using forward annealing
     2. `reinitialize_state` specifies whether or not the initial state should be used for every anneal in the request.
         If False, then after the first, each subsequent anneal starts where the previous finished.
     3. `anneal_schedule` defines the annealing schedule that should be followed. A schedule starts at s=1.0, reverses
         to s_target, pauses for hold_time μs and then anneals forward to s=1.0.
     """
 
+    problem = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("dwave").with_solver("Advantage_system4.1")
+
     # 1. initial state:
     # define a known solution as the initial state:
-    initial = {0: 1, 2: 0, 1: 0, 3: 1, 4: 0, 5: 0}
+    # initial = {0: 1, 2: 0, 1: 0, 3: 1, 4: 0, 5: 0}
 
     # or calculate an initial state
-    problem = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("dwave").with_solver("Advantage_system4.1")
-    # initial = problem.find_initial_state(10)
+    initial = problem.find_initial_state(1)
 
     # 2. reinitialize_state:
     reinitialize_state = False
