@@ -116,6 +116,13 @@ class Problem:
         dnx.draw_pegasus_embedding(dnx.pegasus_graph(11), emb=self.embedding, node_size=3, width=.3)
         plt.savefig(output_path)
 
+    # ---------------- find initial state ---------------- #
+
+    def find_initial_state(self, times=1):
+        """Call the connections find_initial_state method for reverse annealing process. """
+        self.uq_params.update({"num_repeats": times})
+        return self.connection.find_initial_state(self)
+
     # ------------------ Solve problems ------------------ #
 
     def solve(self, times=1):
