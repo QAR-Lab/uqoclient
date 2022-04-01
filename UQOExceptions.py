@@ -132,3 +132,9 @@ class FujitsuException(UQOException):
     def __init__(self, answer_details):
         message = "\n\nError while accessing Fujitsu Solver:\n" + answer_details["message"]
         UQOException.__init__(self, message)
+
+
+class GeneticException(UQOException):
+    def __init__(self, answer_details):
+        message = "\n\nError while executing Genetic Algorithm:\n" + answer_details["message"]
+        UQOException.__init__(self, message)

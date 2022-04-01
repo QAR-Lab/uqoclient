@@ -418,3 +418,64 @@ def fujistu_example_ising(config):
     # answer.print_energies()
     # answer.print_num_occurrences()
     answer.print_solutions_nice()
+
+
+def genetic_example_qubo(config):
+    # TODO: Doku, Reverse Annealing als Mutationsoperator anbieten
+    parameters = {
+        "mutation_type": "reverse_annealing",  # "random", "swap", "inversion", "scramble" or "adaptive"
+        "parent_selection_type": "random", # "random", "steady_state", "rank", "tournament", "roulette_wheel" or "stochastic_universal"
+        "crossover_type": "single_point",  # "single_point", "two_points", "uniform" or "scattered"
+        "num_generations": 50,
+        "num_parents_mating": 4,
+        "sol_per_pop": 8,
+        "keep_parents": 1,
+        "mutation_percent_genes": 50
+    }
+    answer = Problem.Qubo(config, example_qubo).with_platform("genetic").with_params(**parameters).solve(10)
+
+    # -----------
+    # These calls return arrays containing the raw information in lists
+    # -----------
+    # answer.solutions
+    # answer.energies
+    # answer.num_occurrences
+    # answer.apply_energy_offset(offset)
+    # answer.print_energies()
+    # -----------
+    # These functions will print the received information in different ways
+    # -----------
+    # answer.print_solutions()
+    # answer.print_energies()
+    # answer.print_num_occurrences()
+    answer.print_solutions_nice()
+
+
+def genetic_example_ising(config):
+    parameters = {
+        "mutation_type": "reverse_annealing",  # "random", "swap", "inversion", "scramble", "adaptive" or "reverse_annealing"
+        "parent_selection_type": "random",  # "random", "steady_state", "rank", "tournament", "roulette_wheel" or "stochastic_universal"
+        "crossover_type": "single_point",  # "single_point", "two_points", "uniform" or "scattered"
+        "num_generations": 50,
+        "num_parents_mating": 4,
+        "sol_per_pop": 8,
+        "keep_parents": 1,
+        "mutation_percent_genes": 50
+    }
+    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("genetic").with_params(**parameters).solve(10)
+
+    # -----------
+    # These calls return arrays containing the raw information in lists
+    # -----------
+    # answer.solutions
+    # answer.energies
+    # answer.num_occurrences
+    # answer.apply_energy_offset(offset)
+    # answer.print_energies()
+    # -----------
+    # These functions will print the received information in different ways
+    # -----------
+    # answer.print_solutions()
+    # answer.print_energies()
+    # answer.print_num_occurrences()
+    answer.print_solutions_nice()

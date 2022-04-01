@@ -73,9 +73,17 @@ class DWaveResponse(Response):
 
 
 class FujitsuDAUResponse(Response):
-    """Response that represents a reply from the DWave Solver. """
+    """Response that represents a reply from the Fujitsu Solver. """
 
     def __init__(self, fujitsu_answer):
         sampleset = SampleSet.from_serializable(fujitsu_answer)
         Response.__init__(self, sampleset)
         self.timing = self.sampleset.info["timing"]
+
+
+class GeneticResponse(Response):
+    """Response that represents a reply from the Genetic Solver. """
+
+    def __init__(self, fujitsu_answer):
+        sampleset = SampleSet.from_serializable(fujitsu_answer)
+        Response.__init__(self, sampleset)
