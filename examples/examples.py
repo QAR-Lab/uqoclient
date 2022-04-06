@@ -230,10 +230,10 @@ def dwave_example_qubo_reverse_annealing(config):
 
     # 1. initial state:
     # define a known solution as the initial state:
-    # initial = {0: 1, 2: 0, 1: 0, 3: 1, 4: 0, 5: 0}
+    initial = {0: 1, 2: 0, 1: 0, 3: 1, 4: 0, 5: 0}
 
     # or calculate an initial state
-    initial = problem.find_initial_state(1)
+    # initial = problem.find_initial_state(1)
 
     # 2. reinitialize_state:
     reinitialize_state = False
@@ -421,18 +421,28 @@ def fujistu_example_ising(config):
 
 
 def genetic_example_qubo(config):
-    # TODO: Doku, Reverse Annealing als Mutationsoperator anbieten
+    # TODO: Doku
     parameters = {
-        "mutation_type": "reverse_annealing",  # "random", "swap", "inversion", "scramble" or "adaptive"
-        "parent_selection_type": "random", # "random", "steady_state", "rank", "tournament", "roulette_wheel" or "stochastic_universal"
+        "mutation_type": "reverse_annealing",  # "random", "swap", "inversion", "scramble", "adaptive" or "reverse_annealing"
+        "parent_selection_type": "random",  # "random", "steady_state", "rank", "tournament", "roulette_wheel" or "stochastic_universal"
         "crossover_type": "single_point",  # "single_point", "two_points", "uniform" or "scattered"
-        "num_generations": 50,
-        "num_parents_mating": 4,
-        "sol_per_pop": 8,
+        "num_generations": 2,
+        "num_parents_mating": 2,
+        "sol_per_pop": 3,
         "keep_parents": 1,
-        "mutation_percent_genes": 50
+        "mutation_percent_genes": 80
     }
-    answer = Problem.Qubo(config, example_qubo).with_platform("genetic").with_params(**parameters).solve(10)
+    if parameters["mutation_type"] == "reverse_annealing":
+        # 2. reinitialize_state:
+        reinitialize_state = False
+
+        # 3. data for the anneal schedule:
+        s_target = 0.45
+        hold_time = 80
+
+        reverse_anneal_params = {'reinitialize_state': reinitialize_state, 's_target': s_target, 'hold_time': hold_time}
+        parameters.update(reverse_anneal_params)
+    answer = Problem.Qubo(config, example_qubo).with_platform("genetic").with_params(**parameters).solve(1)
 
     # -----------
     # These calls return arrays containing the raw information in lists
@@ -462,7 +472,18 @@ def genetic_example_ising(config):
         "keep_parents": 1,
         "mutation_percent_genes": 50
     }
-    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("genetic").with_params(**parameters).solve(10)
+
+    if parameters["mutation_type"] == "reverse_annealing":
+        # 2. reinitialize_state:
+        reinitialize_state = False
+
+        # 3. data for the anneal schedule:
+        s_target = 0.45
+        hold_time = 80
+
+        reverse_anneal_params = {'reinitialize_state': reinitialize_state, 's_target': s_target, 'hold_time': hold_time}
+        parameters.update(reverse_anneal_params)
+    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("genetic").with_params(**parameters).solve(1)
 
     # -----------
     # These calls return arrays containing the raw information in lists
