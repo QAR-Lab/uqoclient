@@ -279,7 +279,8 @@ def dwave_example_ising_reverse_annealing(config):
         to s_target, pauses for hold_time μs and then anneals forward to s=1.0.
     """
 
-    problem = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("dwave").with_solver("Advantage_system4.1")
+    problem = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("dwave").with_solver(
+        "Advantage_system4.1")
 
     # 1. initial state:
     # define a known solution as the initial state:
@@ -331,26 +332,30 @@ def fujistu_example_qubo(config):
     number_runs = 16
     parameters = {
         # default parameters:
-        "number_iterations": 500,           # total number of iterations per run
-        "temperature_start": 1000.0,        # start temperature as float value
-        "temperature_end": 1.0,             # end temperature as float value or None
-        "temperature_mode": 0,              # 0, 1, or 2 to define the cooling curve
-                                            # 0: reduce temperature by factor (1-temperature_decay) every temperature_interval steps
-                                            # 1: reduce temperature by factor (1-temperature_decay*temperature) every temperature_interval steps
-                                            # 2: reduce temperature by factor (1-temperature_decay*temperature^2) every temperature_interval steps
-        "temperature_decay": 0.001,         # decay per step if temperature_end is None
-        "temperature_interval": 100,        # number of iterations keeping temperature constant
-        "offset_increase_rate": 0.0,        # increase of dynamic offset when no bit selected, set to 0.0 to switch off dynamic energy feature
-        "solution_mode": "COMPLETE",        # COMPLETE returns all runs best configuration, QUICK returns overall best configuration only
+        "number_iterations": 500,  # total number of iterations per run
+        "temperature_start": 1000.0,  # start temperature as float value
+        "temperature_end": 1.0,  # end temperature as float value or None
+        "temperature_mode": 0,  # 0, 1, or 2 to define the cooling curve
+        # 0: reduce temperature by factor (1-temperature_decay) every temperature_interval steps
+        # 1: reduce temperature by factor (1-temperature_decay*temperature) every temperature_interval steps
+        # 2: reduce temperature by factor (1-temperature_decay*temperature^2) every temperature_interval steps
+        "temperature_decay": 0.001,  # decay per step if temperature_end is None
+        "temperature_interval": 100,  # number of iterations keeping temperature constant
+        "offset_increase_rate": 0.0,
+        # increase of dynamic offset when no bit selected, set to 0.0 to switch off dynamic energy feature
+        "solution_mode": "COMPLETE",
+        # COMPLETE returns all runs best configuration, QUICK returns overall best configuration only
         "optimization_method": "annealing",  # annealing or parallel tempering are supported methods
-        "number_replicas": 26,              # number of replicas for parallel tempering mode
-        "annealer_version": 2,              # Digital Annealer version
-        "guidance_config": {},              # list of variable values that to be set for DA as a starting values of variables for annealing process for each run
-        "auto_tuning": 0,                    # EXPERIMENTAL! options of automatic tuning the QUBO
-        "bit_precision": 16,                 # bit precision (DAU version 2)
-        "connection_mode": "CMODE_ASYNC"    # Mode can be CMODE_ASYNC (default) or CMODE_SYNC
-        }
-    answer = Problem.Qubo(config, example_qubo).with_platform("fujitsu").with_solver(solver).with_params(**parameters).solve(number_runs)
+        "number_replicas": 26,  # number of replicas for parallel tempering mode
+        "annealer_version": 2,  # Digital Annealer version
+        "guidance_config": {},
+        # list of variable values that to be set for DA as a starting values of variables for annealing process for each run
+        "auto_tuning": 0,  # EXPERIMENTAL! options of automatic tuning the QUBO
+        "bit_precision": 16,  # bit precision (DAU version 2)
+        "connection_mode": "CMODE_ASYNC"  # Mode can be CMODE_ASYNC (default) or CMODE_SYNC
+    }
+    answer = Problem.Qubo(config, example_qubo).with_platform("fujitsu").with_solver(solver).with_params(
+        **parameters).solve(number_runs)
 
     # -----------
     # These calls return arrays containing the raw information in lists
@@ -382,26 +387,30 @@ def fujistu_example_ising(config):
     number_runs = 16  # number of stochastically independent runs
     parameters = {
         # default parameters:
-        "number_iterations": 500,           # total number of iterations per run
-        "temperature_start": 1000.0,        # start temperature as float value
-        "temperature_end": 1.0,             # end temperature as float value or None
-        "temperature_mode": 0,              # 0, 1, or 2 to define the cooling curve
-                                            # 0: reduce temperature by factor (1-temperature_decay) every temperature_interval steps
-                                            # 1: reduce temperature by factor (1-temperature_decay*temperature) every temperature_interval steps
-                                            # 2: reduce temperature by factor (1-temperature_decay*temperature^2) every temperature_interval steps
-        "temperature_decay": 0.001,         # decay per step if temperature_end is None
-        "temperature_interval": 100,        # number of iterations keeping temperature constant
-        "offset_increase_rate": 0.0,        # increase of dynamic offset when no bit selected, set to 0.0 to switch off dynamic energy feature
-        "solution_mode": "COMPLETE",        # COMPLETE returns all runs best configuration, QUICK returns overall best configuration only
+        "number_iterations": 500,  # total number of iterations per run
+        "temperature_start": 1000.0,  # start temperature as float value
+        "temperature_end": 1.0,  # end temperature as float value or None
+        "temperature_mode": 0,  # 0, 1, or 2 to define the cooling curve
+        # 0: reduce temperature by factor (1-temperature_decay) every temperature_interval steps
+        # 1: reduce temperature by factor (1-temperature_decay*temperature) every temperature_interval steps
+        # 2: reduce temperature by factor (1-temperature_decay*temperature^2) every temperature_interval steps
+        "temperature_decay": 0.001,  # decay per step if temperature_end is None
+        "temperature_interval": 100,  # number of iterations keeping temperature constant
+        "offset_increase_rate": 0.0,
+        # increase of dynamic offset when no bit selected, set to 0.0 to switch off dynamic energy feature
+        "solution_mode": "COMPLETE",
+        # COMPLETE returns all runs best configuration, QUICK returns overall best configuration only
         "optimization_method": "annealing",  # annealing or parallel tempering are supported methods
-        "number_replicas": 26,              # number of replicas for parallel tempering mode
-        "annealer_version": 2,              # Digital Annealer version
-        "guidance_config": {},              # list of variable values that to be set for DA as a starting values of variables for annealing process for each run
-        "auto_tuning": 0,                    # EXPERIMENTAL! options of automatic tuning the QUBO
-        "bit_precision": 16,                 # bit precision (DAU version 2)
-        "connection_mode": "CMODE_ASYNC"    # Mode can be CMODE_ASYNC (default) or CMODE_SYNC
-        }
-    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("fujitsu").with_solver(solver).with_params(**parameters).solve(number_runs)
+        "number_replicas": 26,  # number of replicas for parallel tempering mode
+        "annealer_version": 2,  # Digital Annealer version
+        "guidance_config": {},
+        # list of variable values that to be set for DA as a starting values of variables for annealing process for each run
+        "auto_tuning": 0,  # EXPERIMENTAL! options of automatic tuning the QUBO
+        "bit_precision": 16,  # bit precision (DAU version 2)
+        "connection_mode": "CMODE_ASYNC"  # Mode can be CMODE_ASYNC (default) or CMODE_SYNC
+    }
+    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("fujitsu").with_solver(
+        solver).with_params(**parameters).solve(number_runs)
 
     # -----------
     # These calls return arrays containing the raw information in lists
@@ -421,27 +430,94 @@ def fujistu_example_ising(config):
 
 
 def genetic_example_qubo(config):
-    # TODO: Doku
+    """
+        Required parameters:
+            1) num_generations: The number of generations/iterations of the genetic algorithm.
+            2) sol_per_pop: The number of solutions/chromosomes/individuals in the population (i.e. population size).
+            3) num_parents_mating: The number of solutions to be selected from the population as parents for mating and
+            producing the offspring.
+        Optional parameters:
+            4) initial_population: A user-defined initial population as a list of chromosomes.
+            Example: "initial_population": [[0, 0, 0, 0], [1, 0, 0, 0], [0, 1, 1, 0], [0, 0, 0, 1]]
+            5) parent_selection_type: The parent selection type. Supported types are:
+               sss (for steady-state selection),
+               rws (for roulette wheel selection),
+               sus (for stochastic universal selection),
+               rank (for rank selection),
+               random (for random selection),
+               tournament (for tournament selection)
+            6) keep_parents: Number of parents to keep in the current population. -1 (default) means to keep all parents in
+            the next population. 0 means keep no parents in the next population. A value greater than 0 means keeps the
+            specified number of parents in the next population. Note that the assigned value to the keep_parent parameter
+            must satisfy the following conditions:
+                a) Less than or equal to sol_per_pop
+                b) Less than or equal to num_parents_mating
+                c) Greater than or equal to -1.
+            7) K_tournament: In case that the parent selection type is tournament, the K_tournament specifies the number of
+            parents participating in the tournament selection. (default 3).
+            8) crossover_type: Type of the crossover operation. Supported types are:
+               single_point (for single-point crossover),
+               two_points (for two points crossover),
+               uniform (for uniform crossover),
+               scattered (for scattered crossover)
+               It defaults to single_point.
+            9) crossover_probability: The probability of selecting a parent for applying the crossover operation.
+            Its value must be between 0.0 and 1.0 inclusive. For each parent, a random value between 0.0 and 1.0 is
+            generated. If this random value is less than or equal to the value assigned to the crossover_probability
+            parameter, then the parent is selected.
+            10) mutation_type: Type of the mutation operation. Supported types are:
+                random (for random mutation),
+                swap (for swap mutation),
+                inversion (for inversion mutation),
+                scramble (for scramble mutation),
+                adaptive (for adaptive mutation),
+                reverse_annealing.
+                It defaults to random.
+                If you use reverse_annealing, you can also define 'reinitialize_state', 's_target' and 'hold_time' (see
+                reverse annealing examples)
+            11) mutation_probability: The probability of selecting a gene for applying the mutation operation.
+            Its value must be between 0.0 and 1.0 inclusive. For each gene in a solution, a random value between 0.0 and 1.0
+            is generated. If this random value is less than or equal to the value assigned to the mutation_probability
+            parameter, then the gene is selected. If this parameter exists, then there is no need for the 2 parameters
+            mutation_percent_genes and mutation_num_genes.
+            12) mutation_by_replacement: An optional bool parameter. It works only when the selected type of mutation is
+            random (mutation_type="random"). In this case, mutation_by_replacement=True means replace the gene by the
+            randomly generated value. If False, then it has no effect and random mutation works by adding the random value
+            to the gene.
+            13) mutation_percent_genes: Percentage of genes to mutate. It defaults to the string "default" which is later
+            translated into the integer 10 which means 10% of the genes will be mutated. It must be >0 and <=100. Out of
+            this percentage, the number of genes to mutate is deduced which is assigned to the mutation_num_genes parameter.
+            The mutation_percent_genes parameter has no action if mutation_probability or mutation_num_genes exist.
+            14) mutation_num_genes: Number of genes to mutate which defaults to None meaning that no number is specified.
+            The mutation_num_genes parameter has no action if the parameter mutation_probability exists. This parameter has
+            no action if mutation_type is None.
+            15) stop_criteria=None: Some criteria to stop the evolution. Each criterion is passed as str which has a stop
+            word. The current 2 supported words are reach and saturate. reach stops the run() method if the fitness value is
+            equal to or greater than a given fitness value. An example for reach is "reach_40" which stops the evolution if
+            the fitness is >= 40. saturate means stop the evolution if the fitness saturates for a given number of
+            consecutive generations. An example for saturate is "saturate_7" which means stop the run() method if the
+            fitness does not change for 7 consecutive generations.
+        """
+
     parameters = {
-        "mutation_type": "reverse_annealing",  # "random", "swap", "inversion", "scramble", "adaptive" or "reverse_annealing"
-        "parent_selection_type": "random",  # "random", "steady_state", "rank", "tournament", "roulette_wheel" or "stochastic_universal"
-        "crossover_type": "single_point",  # "single_point", "two_points", "uniform" or "scattered"
-        "num_generations": 2,
-        "num_parents_mating": 2,
-        "sol_per_pop": 3,
-        "keep_parents": 1,
-        "mutation_percent_genes": 80
+        "num_generations": 20,
+        "num_parents_mating": 4,
+        "sol_per_pop": 8,
     }
-    if parameters["mutation_type"] == "reverse_annealing":
-        # 2. reinitialize_state:
-        reinitialize_state = False
 
-        # 3. data for the anneal schedule:
-        s_target = 0.45
-        hold_time = 80
+    if "mutation_type" in parameters:
+        if parameters["mutation_type"] == "reverse_annealing":
+            # 2. reinitialize_state:
+            reinitialize_state = False
 
-        reverse_anneal_params = {'reinitialize_state': reinitialize_state, 's_target': s_target, 'hold_time': hold_time}
-        parameters.update(reverse_anneal_params)
+            # 3. data for the anneal schedule:
+            s_target = 0.45
+            hold_time = 80
+
+            reverse_anneal_params = {'reinitialize_state': reinitialize_state, 's_target': s_target,
+                                     'hold_time': hold_time}
+            parameters.update(reverse_anneal_params)
+
     answer = Problem.Qubo(config, example_qubo).with_platform("genetic").with_params(**parameters).solve(1)
 
     # -----------
@@ -462,28 +538,96 @@ def genetic_example_qubo(config):
 
 
 def genetic_example_ising(config):
+    """
+    Required parameters:
+        1) num_generations: The number of generations/iterations of the genetic algorithm.
+        2) sol_per_pop: The number of solutions/chromosomes/individuals in the population (i.e. population size).
+        3) num_parents_mating: The number of solutions to be selected from the population as parents for mating and
+        producing the offspring.
+    Optional parameters:
+        4) initial_population: A user-defined initial population as a list of chromosomes.
+        Example: "initial_population": [[0, 0, 0, 0], [1, 0, 0, 0], [0, 1, 1, 0], [0, 0, 0, 1]]
+        5) parent_selection_type: The parent selection type. Supported types are:
+           sss (for steady-state selection),
+           rws (for roulette wheel selection),
+           sus (for stochastic universal selection),
+           rank (for rank selection),
+           random (for random selection),
+           tournament (for tournament selection)
+        6) keep_parents: Number of parents to keep in the current population. -1 (default) means to keep all parents in
+        the next population. 0 means keep no parents in the next population. A value greater than 0 means keeps the
+        specified number of parents in the next population. Note that the assigned value to the keep_parent parameter
+        must satisfy the following conditions:
+            a) Less than or equal to sol_per_pop
+            b) Less than or equal to num_parents_mating
+            c) Greater than or equal to -1.
+        7) K_tournament: In case that the parent selection type is tournament, the K_tournament specifies the number of
+        parents participating in the tournament selection. (default 3).
+        8) crossover_type: Type of the crossover operation. Supported types are:
+           single_point (for single-point crossover),
+           two_points (for two points crossover),
+           uniform (for uniform crossover),
+           scattered (for scattered crossover)
+           It defaults to single_point.
+        9) crossover_probability: The probability of selecting a parent for applying the crossover operation.
+        Its value must be between 0.0 and 1.0 inclusive. For each parent, a random value between 0.0 and 1.0 is
+        generated. If this random value is less than or equal to the value assigned to the crossover_probability
+        parameter, then the parent is selected.
+        10) mutation_type: Type of the mutation operation. Supported types are:
+            random (for random mutation),
+            swap (for swap mutation),
+            inversion (for inversion mutation),
+            scramble (for scramble mutation),
+            adaptive (for adaptive mutation),
+            reverse_annealing.
+            It defaults to random.
+            If you use reverse_annealing, you can also define 'reinitialize_state', 's_target' and 'hold_time' (see
+            reverse annealing examples)
+        11) mutation_probability: The probability of selecting a gene for applying the mutation operation.
+        Its value must be between 0.0 and 1.0 inclusive. For each gene in a solution, a random value between 0.0 and 1.0
+        is generated. If this random value is less than or equal to the value assigned to the mutation_probability
+        parameter, then the gene is selected. If this parameter exists, then there is no need for the 2 parameters
+        mutation_percent_genes and mutation_num_genes.
+        12) mutation_by_replacement: An optional bool parameter. It works only when the selected type of mutation is
+        random (mutation_type="random"). In this case, mutation_by_replacement=True means replace the gene by the
+        randomly generated value. If False, then it has no effect and random mutation works by adding the random value
+        to the gene.
+        13) mutation_percent_genes: Percentage of genes to mutate. It defaults to the string "default" which is later
+        translated into the integer 10 which means 10% of the genes will be mutated. It must be >0 and <=100. Out of
+        this percentage, the number of genes to mutate is deduced which is assigned to the mutation_num_genes parameter.
+        The mutation_percent_genes parameter has no action if mutation_probability or mutation_num_genes exist.
+        14) mutation_num_genes: Number of genes to mutate which defaults to None meaning that no number is specified.
+        The mutation_num_genes parameter has no action if the parameter mutation_probability exists. This parameter has
+        no action if mutation_type is None.
+        15) stop_criteria=None: Some criteria to stop the evolution. Each criterion is passed as str which has a stop
+        word. The current 2 supported words are reach and saturate. reach stops the run() method if the fitness value is
+        equal to or greater than a given fitness value. An example for reach is "reach_40" which stops the evolution if
+        the fitness is >= 40. saturate means stop the evolution if the fitness saturates for a given number of
+        consecutive generations. An example for saturate is "saturate_7" which means stop the run() method if the
+        fitness does not change for 7 consecutive generations.
+    """
+
     parameters = {
-        "mutation_type": "reverse_annealing",  # "random", "swap", "inversion", "scramble", "adaptive" or "reverse_annealing"
-        "parent_selection_type": "random",  # "random", "steady_state", "rank", "tournament", "roulette_wheel" or "stochastic_universal"
-        "crossover_type": "single_point",  # "single_point", "two_points", "uniform" or "scattered"
-        "num_generations": 50,
+        "num_generations": 20,
         "num_parents_mating": 4,
         "sol_per_pop": 8,
-        "keep_parents": 1,
-        "mutation_percent_genes": 50
     }
 
-    if parameters["mutation_type"] == "reverse_annealing":
-        # 2. reinitialize_state:
-        reinitialize_state = False
+    if "mutation_type" in parameters:
+        if parameters["mutation_type"] == "reverse_annealing":
+            # 2. reinitialize_state:
+            reinitialize_state = False
 
-        # 3. data for the anneal schedule:
-        s_target = 0.45
-        hold_time = 80
+            # 3. data for the anneal schedule:
+            s_target = 0.45
+            hold_time = 80
 
-        reverse_anneal_params = {'reinitialize_state': reinitialize_state, 's_target': s_target, 'hold_time': hold_time}
-        parameters.update(reverse_anneal_params)
-    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("genetic").with_params(**parameters).solve(1)
+            reverse_anneal_params = {'reinitialize_state': reinitialize_state, 's_target': s_target,
+                                     'hold_time': hold_time}
+            parameters.update(reverse_anneal_params)
+
+    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("genetic").with_params(
+        **parameters).solve(1)
 
     # -----------
     # These calls return arrays containing the raw information in lists
