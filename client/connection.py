@@ -477,6 +477,8 @@ class Connection:
                 raise InvalidPlatformException()
             elif error_type == "FujitsuException":
                 raise FujitsuException(answer["error_details"])
+            elif error_type == "LocalBeamSearchException":
+                raise LocalBeamSearchException(answer["error_details"])
 
     def show_quota(self):
         """Print the remaining quota (the time you can spend on a DWave platform in microseconds). """

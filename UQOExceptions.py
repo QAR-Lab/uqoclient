@@ -132,3 +132,9 @@ class FujitsuException(UQOException):
     def __init__(self, answer_details):
         message = "\n\nError while accessing Fujitsu Solver:\n" + answer_details["message"]
         UQOException.__init__(self, message)
+
+
+class LocalBeamSearchException(UQOException):
+    def __init__(self, answer_details):
+        message = "\n\nError while accessing Local Beam Search Solver:\n" + answer_details["message"]
+        UQOException.__init__(self, message)
