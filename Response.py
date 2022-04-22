@@ -79,3 +79,11 @@ class FujitsuDAUResponse(Response):
         sampleset = SampleSet.from_serializable(fujitsu_answer)
         Response.__init__(self, sampleset)
         self.timing = self.sampleset.info["timing"]
+
+
+class TabuResponse(Response):
+    """Response that represents a reply from the DWave Solver. """
+
+    def __init__(self, dwave_answer):
+        sampleset = SampleSet.from_serializable(dwave_answer)
+        Response.__init__(self, sampleset)

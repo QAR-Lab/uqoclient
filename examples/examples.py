@@ -418,3 +418,43 @@ def fujistu_example_ising(config):
     # answer.print_energies()
     # answer.print_num_occurrences()
     answer.print_solutions_nice()
+
+
+def tabu_example_qubo(config):
+
+    answer = Problem.Qubo(config, example_qubo).with_platform("tabu").solve(1)
+
+    # -----------
+    # These calls return arrays containing the raw information in lists
+    # -----------
+    # answer.solutions
+    # answer.energies
+    # answer.num_occurrences
+
+    # -----------
+    # These functions will print the received information in different ways
+    # -----------
+    # answer.print_solutions()
+    # answer.print_energies()
+    # answer.print_num_occurrences()
+    answer.print_solutions_nice()
+
+
+def tabu_example_ising(config):
+
+    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("tabu").solve(1)
+
+    # -----------
+    # These calls return arrays containing the raw information in lists
+    # -----------
+    # answer.solutions
+    # answer.energies
+    # answer.num_occurrences
+
+    # -----------
+    # These functions will print the received information in different ways
+    # -----------
+    # answer.print_solutions()
+    # answer.print_energies()
+    # answer.print_num_occurrences()
+    answer.print_solutions_nice()
