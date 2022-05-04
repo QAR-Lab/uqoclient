@@ -248,6 +248,8 @@ class Connection:
                     answer = Response.DWaveResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "FujitsuDAUSolver":
                     answer = Response.FujitsuDAUResponse(answer["solver_details"]["answer"])
+                elif answer["solver"] == "TabuSolver":
+                    answer = Response.TabuResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "LeapHybridSolver":
                     answer = Response.LeapHybridResponse(answer["solver_details"]["answer"])
                 return answer
@@ -293,6 +295,8 @@ class Connection:
                     answer = Response.DWaveResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "FujitsuDAUSolver":
                     answer = Response.FujitsuDAUResponse(answer["solver_details"]["answer"])
+                elif answer["solver"] == "TabuSolver":
+                    answer = Response.TabuResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "LeapHybridSolver":
                     answer = Response.LeapHybridResponse(answer["solver_details"]["answer"])
                 return answer
@@ -477,6 +481,8 @@ class Connection:
                 raise InvalidPlatformException()
             elif error_type == "FujitsuException":
                 raise FujitsuException(answer["error_details"])
+            elif error_type == "TabuException":
+                raise TabuException(answer["error_details"])
             elif error_type == "LeapHybridException":
                 raise LeapHybridException(answer["error_details"])
 
