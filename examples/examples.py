@@ -437,7 +437,8 @@ def genetic_example_qubo(config):
             3) num_parents_mating: The number of solutions to be selected from the population as parents for mating and
             producing the offspring.
         Optional parameters:
-            4) initial_population: A user-defined initial population as a list of chromosomes.
+            4) initial_population: A user-defined initial population as a list of chromosomes. If you use this parameter,
+            the parameter sol_per_pop has no action.
             Example: "initial_population": [[0, 0, 0, 0], [1, 0, 0, 0], [0, 1, 1, 0], [0, 0, 0, 1]]
             5) parent_selection_type: The parent selection type. Supported types are:
                sss (for steady-state selection),
@@ -473,7 +474,7 @@ def genetic_example_qubo(config):
                 adaptive (for adaptive mutation),
                 reverse_annealing.
                 It defaults to random.
-                If you use reverse_annealing, you can also define 'reinitialize_state', 's_target' and 'hold_time' (see
+                If you use reverse_annealing, you must also define 'reinitialize_state', 's_target' and 'hold_time' (see
                 reverse annealing examples)
             11) mutation_probability: The probability of selecting a gene for applying the mutation operation.
             Its value must be between 0.0 and 1.0 inclusive. For each gene in a solution, a random value between 0.0 and 1.0
@@ -497,10 +498,29 @@ def genetic_example_qubo(config):
             the fitness is >= 40. saturate means stop the evolution if the fitness saturates for a given number of
             consecutive generations. An example for saturate is "saturate_7" which means stop the run() method if the
             fitness does not change for 7 consecutive generations.
+            16) selection_criterion_for_mutation: if you have set mutation_type to reverse_annealing, with the parameter
+            selection_criterion_for_mutation you can choose how the offspring chromosomes will be selected for the
+            mutation. Possible values:
+            fixed_rate (there is a fixed probability that decides if a chromosome will be mutated or not. You can set
+            this probability with the parameter reverse_annealing_mutation_rate)
+            adaptive (the probability)
+            Default is a fixed rate with probability 1.0.
+            17) reverse_annealing_fixed_rate: if you have set mutation_type to reverse_annealing and
+            selection_criterion_for_mutation to fixed_rate, you can choose a probability rate for mutating a chromosome.
+            If you don't set this parameter, the default value is 1.0, meaning that every offspring chromosome will be
+            mutated. Possible values are floats in range [0.0, 1.0].
+            18) reverse_annealing_adaptive_rate: if you have set mutation_type to reverse_annealing and
+            selection_criterion_for_mutation to adaptive, you can choose two probabilities in a list. The first entry
+            specifies the probability low-quality solutions will be mutated, the second entry specifies the probability
+            high-quality solutions will be mutated. Example: "reverse_annealing_adaptive_rates"=[0.25, 0.1] means with a
+            probability of 0.25 low-quality solutions will be mutated and with a probability of 0.1 high-quality
+            solutions will be mutated. The quality of a solution is calculated by taking the average fitness value of
+            the population. A solution is low-quality if its fitness value is lower than the average, otherwise it is
+            high-quality. Default value: [0.75, 0.25]
         """
 
     parameters = {
-        "num_generations": 20,
+        "num_generations": 10,
         "num_parents_mating": 4,
         "sol_per_pop": 8,
     }
@@ -545,7 +565,8 @@ def genetic_example_ising(config):
         3) num_parents_mating: The number of solutions to be selected from the population as parents for mating and
         producing the offspring.
     Optional parameters:
-        4) initial_population: A user-defined initial population as a list of chromosomes.
+        4) initial_population: A user-defined initial population as a list of chromosomes. If you use this parameter,
+        the parameter sol_per_pop has no action.
         Example: "initial_population": [[0, 0, 0, 0], [1, 0, 0, 0], [0, 1, 1, 0], [0, 0, 0, 1]]
         5) parent_selection_type: The parent selection type. Supported types are:
            sss (for steady-state selection),
@@ -581,7 +602,7 @@ def genetic_example_ising(config):
             adaptive (for adaptive mutation),
             reverse_annealing.
             It defaults to random.
-            If you use reverse_annealing, you can also define 'reinitialize_state', 's_target' and 'hold_time' (see
+            If you use reverse_annealing, you must also define 'reinitialize_state', 's_target' and 'hold_time' (see
             reverse annealing examples)
         11) mutation_probability: The probability of selecting a gene for applying the mutation operation.
         Its value must be between 0.0 and 1.0 inclusive. For each gene in a solution, a random value between 0.0 and 1.0
@@ -605,10 +626,29 @@ def genetic_example_ising(config):
         the fitness is >= 40. saturate means stop the evolution if the fitness saturates for a given number of
         consecutive generations. An example for saturate is "saturate_7" which means stop the run() method if the
         fitness does not change for 7 consecutive generations.
+        16) selection_criterion_for_mutation: if you have set mutation_type to reverse_annealing, with the parameter
+        selection_criterion_for_mutation you can choose how the offspring chromosomes will be selected for the
+        mutation. Possible values:
+        fixed_rate (there is a fixed probability that decides if a chromosome will be mutated or not. You can set
+        this probability with the parameter reverse_annealing_mutation_rate)
+        adaptive (the probability)
+        Default is a fixed rate with probability 1.0.
+        17) reverse_annealing_fixed_rate: if you have set mutation_type to reverse_annealing and
+        selection_criterion_for_mutation to fixed_rate, you can choose a probability rate for mutating a chromosome.
+        If you don't set this parameter, the default value is 1.0, meaning that every offspring chromosome will be
+        mutated. Possible values are floats in range [0.0, 1.0].
+        18) reverse_annealing_adaptive_rates: if you have set mutation_type to reverse_annealing and
+        selection_criterion_for_mutation to adaptive, you can choose two probabilities in a list. The first entry
+        specifies the probability low-quality solutions will be mutated, the second entry specifies the probability
+        high-quality solutions will be mutated. Example: "reverse_annealing_adaptive_rates"=[0.25, 0.1] means with a
+        probability of 0.25 low-quality solutions will be mutated and with a probability of 0.1 high-quality
+        solutions will be mutated. The quality of a solution is calculated by taking the average fitness value of
+        the population. A solution is low-quality if its fitness value is lower than the average, otherwise it is
+        high-quality.
     """
 
     parameters = {
-        "num_generations": 20,
+        "num_generations": 10,
         "num_parents_mating": 4,
         "sol_per_pop": 8,
     }
