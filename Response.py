@@ -87,3 +87,12 @@ class TabuResponse(Response):
     def __init__(self, dwave_answer):
         sampleset = SampleSet.from_serializable(dwave_answer)
         Response.__init__(self, sampleset)
+
+
+class LeapHybridResponse(Response):
+    """Response that represents a reply from the DWave Solver. """
+
+    def __init__(self, leap_answer):
+        sampleset = SampleSet.from_serializable(leap_answer)
+        Response.__init__(self, sampleset)
+        self.timing = self.sampleset.info["timing"]

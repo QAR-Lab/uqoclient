@@ -250,6 +250,8 @@ class Connection:
                     answer = Response.FujitsuDAUResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "TabuSolver":
                     answer = Response.TabuResponse(answer["solver_details"]["answer"])
+                elif answer["solver"] == "LeapHybridSolver":
+                    answer = Response.LeapHybridResponse(answer["solver_details"]["answer"])
                 return answer
             else:
                 self.check_errors(answer)
@@ -295,6 +297,8 @@ class Connection:
                     answer = Response.FujitsuDAUResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "TabuSolver":
                     answer = Response.TabuResponse(answer["solver_details"]["answer"])
+                elif answer["solver"] == "LeapHybridSolver":
+                    answer = Response.LeapHybridResponse(answer["solver_details"]["answer"])
                 return answer
             else:
                 print(answer["status"])
@@ -479,6 +483,8 @@ class Connection:
                 raise FujitsuException(answer["error_details"])
             elif error_type == "TabuException":
                 raise TabuException(answer["error_details"])
+            elif error_type == "LeapHybridException":
+                raise LeapHybridException(answer["error_details"])
 
     def show_quota(self):
         """Print the remaining quota (the time you can spend on a DWave platform in microseconds). """
