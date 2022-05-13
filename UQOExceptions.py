@@ -138,3 +138,21 @@ class LocalBeamSearchException(UQOException):
     def __init__(self, answer_details):
         message = "\n\nError while accessing Local Beam Search Solver:\n" + answer_details["message"]
         UQOException.__init__(self, message)
+
+
+class GeneticException(UQOException):
+    def __init__(self, answer_details):
+        message = "\n\nError while executing Genetic Algorithm:\n" + answer_details["message"]
+        UQOException.__init__(self, message)
+
+
+class TabuException(UQOException):
+    def __init__(self, answer_details):
+        message = "\n\nError while accessing Tabu Solver:\n" + answer_details["message"]
+        UQOException.__init__(self, message)
+
+
+class LeapHybridException(UQOException):
+    def __init__(self, answer_details):
+        message = "\n\nError while accessing Leap Hybrid Solver:\n" + answer_details["message"]
+        UQOException.__init__(self, message)
