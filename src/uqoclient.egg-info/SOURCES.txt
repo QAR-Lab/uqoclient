@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+src/client/__init__.py
+src/client/config.py
+src/client/connection.py
+src/examples/__init__.py
+src/examples/examples.py
+src/examples/graph_coloring_example.py
+src/examples/util.py
+src/uqoclient.egg-info/PKG-INFO
+src/uqoclient.egg-info/SOURCES.txt
+src/uqoclient.egg-info/dependency_links.txt
+src/uqoclient.egg-info/top_level.txt
