@@ -147,6 +147,12 @@ def get_dwave_solvers(config):
     print(connection.get_available_dwave_solvers())
 
 
+def get_edgelist(config):
+    """Print the edge list of the specified D-Wave solver"""
+    solver = "Advantage_system4.1"
+    connection = config.create_connection()
+    print(connection.get_edgelist(solver))
+
 def show_quota(config):
     """Print the users remaining quota. """
     connection = config.create_connection()
