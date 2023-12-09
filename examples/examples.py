@@ -3,6 +3,7 @@ from . import graph_coloring_example as graphcoloring
 from .. import Problem
 from matplotlib import pyplot as plt
 import numpy as np
+from .. UQOExceptions import *
 
 # Example QUBO with some reward and penalty values
 example_qubo = {(0, 0): -2, (1, 1): -2, (2, 2): -2, (3, 3): -2, (4, 4): -2, (5, 5): -2,
@@ -320,7 +321,7 @@ def dwave_example_ising_reverse_annealing(config):
 
 
 def fujistu_example_qubo(config):
-    """ Solve the QUBO example with Fujitsu DAU.
+    """ Solve the QUBO example with the Fujitsu DAv3.
 
     Parameters
     ----------
@@ -329,9 +330,12 @@ def fujistu_example_qubo(config):
     """
 
     solver = "CPU"  # CPU or DAU
-    number_runs = 16
-    parameters = {
-        # default parameters:
+    number_runs = 16  # count of independent annealing runs
+
+    # example parameters for using the CPU solver
+    parameters_cpu = {
+        "optimization_method": "annealing",
+        # The CPU solver offers "annealing" and "parallel_tempering". Please specify which method you want to use.
         "number_iterations": 500,  # total number of iterations per run
         "temperature_start": 1000.0,  # start temperature as float value
         "temperature_end": 1.0,  # end temperature as float value or None
@@ -341,19 +345,27 @@ def fujistu_example_qubo(config):
         # 2: reduce temperature by factor (1-temperature_decay*temperature^2) every temperature_interval steps
         "temperature_decay": 0.001,  # decay per step if temperature_end is None
         "temperature_interval": 100,  # number of iterations keeping temperature constant
-        "offset_increase_rate": 0.0,
-        # increase of dynamic offset when no bit selected, set to 0.0 to switch off dynamic energy feature
-        "solution_mode": "COMPLETE",
-        # COMPLETE returns all runs best configuration, QUICK returns overall best configuration only
-        "optimization_method": "annealing",  # annealing or parallel tempering are supported methods
-        "number_replicas": 26,  # number of replicas for parallel tempering mode
-        "annealer_version": 2,  # Digital Annealer version
-        "guidance_config": {},
-        # list of variable values that to be set for DA as a starting values of variables for annealing process for each run
-        "auto_tuning": 0,  # EXPERIMENTAL! options of automatic tuning the QUBO
-        "bit_precision": 16,  # bit precision (DAU version 2)
-        "connection_mode": "CMODE_ASYNC"  # Mode can be CMODE_ASYNC (default) or CMODE_SYNC
+        # "guidance_config": {1: 1, 0: 1}  # Specifies an initial value for each variable
     }
+
+    # example parameters for using the DAU solver
+    parameters_dau = {
+        "num_output_solution": 1,  # Maximal number of the best solutions returned by each optimization process.
+        # The total number of solutions is num_output_solution * number_runs
+        # Default: 5, Min: 1, Max: 1024
+        "time_limit_sec": 15,  # Maximum running time of DA in seconds. Default: 10, Min: 1, Max: 1800
+        "target_energy": None  # Threshold energy for fast exit.
+        # Default: None, Min: -99999999999, Max: +99999999999
+        # "guidance_config": {1: 1, 0: 1}  # Specifies an initial value for each variable
+    }
+
+    if solver == "DAU":
+        parameters = parameters_dau
+    elif solver == "CPU":
+        parameters = parameters_cpu
+    else:
+        raise InvalidFujitsuSolverException(solver)
+
     answer = Problem.Qubo(config, example_qubo).with_platform("fujitsu").with_solver(solver).with_params(
         **parameters).solve(number_runs)
 
@@ -384,9 +396,12 @@ def fujistu_example_ising(config):
     """
 
     solver = "CPU"  # CPU or DAU
-    number_runs = 16  # number of stochastically independent runs
-    parameters = {
-        # default parameters:
+    number_runs = 16  # count of independent annealing runs
+
+    # example parameters for using the CPU solver
+    parameters_cpu = {
+        "optimization_method": "annealing",
+        # The CPU solver offers "annealing" and "parallel_tempering". Please specify which method you want to use.
         "number_iterations": 500,  # total number of iterations per run
         "temperature_start": 1000.0,  # start temperature as float value
         "temperature_end": 1.0,  # end temperature as float value or None
@@ -396,19 +411,27 @@ def fujistu_example_ising(config):
         # 2: reduce temperature by factor (1-temperature_decay*temperature^2) every temperature_interval steps
         "temperature_decay": 0.001,  # decay per step if temperature_end is None
         "temperature_interval": 100,  # number of iterations keeping temperature constant
-        "offset_increase_rate": 0.0,
-        # increase of dynamic offset when no bit selected, set to 0.0 to switch off dynamic energy feature
-        "solution_mode": "COMPLETE",
-        # COMPLETE returns all runs best configuration, QUICK returns overall best configuration only
-        "optimization_method": "annealing",  # annealing or parallel tempering are supported methods
-        "number_replicas": 26,  # number of replicas for parallel tempering mode
-        "annealer_version": 2,  # Digital Annealer version
-        "guidance_config": {},
-        # list of variable values that to be set for DA as a starting values of variables for annealing process for each run
-        "auto_tuning": 0,  # EXPERIMENTAL! options of automatic tuning the QUBO
-        "bit_precision": 16,  # bit precision (DAU version 2)
-        "connection_mode": "CMODE_ASYNC"  # Mode can be CMODE_ASYNC (default) or CMODE_SYNC
+        # "guidance_config": {1: 1, 0: 1}  # Specifies an initial value for each variable
     }
+
+    # example parameters for using the DAU solver
+    parameters_dau = {
+        "num_output_solution": 1,  # Maximal number of the best solutions returned by each optimization process.
+        # The total number of solutions is num_output_solution * number_runs
+        # Default: 5, Min: 1, Max: 1024
+        "time_limit_sec": 15,  # Maximum running time of DA in seconds. Default: 10, Min: 1, Max: 1800
+        "target_energy": None  # Threshold energy for fast exit.
+        # Default: None, Min: -99999999999, Max: +99999999999
+        # "guidance_config": {1: 1, 0: 1}  # Specifies an initial value for each variable
+    }
+
+    if solver == "DAU":
+        parameters = parameters_dau
+    elif solver == "CPU":
+        parameters = parameters_cpu
+    else:
+        raise InvalidFujitsuSolverException(solver)
+
     answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("fujitsu").with_solver(
         solver).with_params(**parameters).solve(number_runs)
 

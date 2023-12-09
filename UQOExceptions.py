@@ -12,6 +12,12 @@ class NotAQuboException(UQOException):
         UQOException.__init__(self, message)
 
 
+class InvalidFujitsuSolverException(UQOException):
+    def __init__(self, solver):
+        message = f"\n\n{solver} is not a valid solver! Valid solvers are 'CPU' and 'DAU'"
+        UQOException.__init__(self, message)
+
+
 # ------------ AUTH - EXCEPTIONS ------------ #
 
 
