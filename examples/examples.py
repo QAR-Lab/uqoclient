@@ -320,8 +320,8 @@ def dwave_example_ising_reverse_annealing(config):
     answer.print_solutions_nice()
 
 
-def fujistu_example_qubo(config):
-    """ Solve the QUBO example with the Fujitsu DAv3.
+def fujistuCPU_example_qubo(config):
+    """ Solve the QUBO example with the Fujitsu CPU Simulator.
 
     Parameters
     ----------
@@ -329,14 +329,13 @@ def fujistu_example_qubo(config):
         The config object that contains the users configuration data
     """
 
-    solver = "CPU"  # CPU or DAU
     number_runs = 16  # count of independent annealing runs
 
     # example parameters for using the CPU solver
-    parameters_cpu = {
+    parameters = {
         "optimization_method": "annealing",
         # The CPU solver offers "annealing" and "parallel_tempering". Please specify which method you want to use.
-        "number_iterations": 500,  # total number of iterations per run
+        "number_iterations": 1000,  # total number of iterations per run
         "temperature_start": 1000.0,  # start temperature as float value
         "temperature_end": 1.0,  # end temperature as float value or None
         "temperature_mode": 0,  # 0, 1, or 2 to define the cooling curve
@@ -348,25 +347,7 @@ def fujistu_example_qubo(config):
         # "guidance_config": {1: 1, 0: 1}  # Specifies an initial value for each variable
     }
 
-    # example parameters for using the DAU solver
-    parameters_dau = {
-        "num_output_solution": 1,  # Maximal number of the best solutions returned by each optimization process.
-        # The total number of solutions is num_output_solution * number_runs
-        # Default: 5, Min: 1, Max: 1024
-        "time_limit_sec": 15,  # Maximum running time of DA in seconds. Default: 10, Min: 1, Max: 1800
-        "target_energy": None  # Threshold energy for fast exit.
-        # Default: None, Min: -99999999999, Max: +99999999999
-        # "guidance_config": {1: 1, 0: 1}  # Specifies an initial value for each variable
-    }
-
-    if solver == "DAU":
-        parameters = parameters_dau
-    elif solver == "CPU":
-        parameters = parameters_cpu
-    else:
-        raise InvalidFujitsuSolverException(solver)
-
-    answer = Problem.Qubo(config, example_qubo).with_platform("fujitsu").with_solver(solver).with_params(
+    answer = Problem.Qubo(config, example_qubo).with_platform("fujitsu").with_solver("CPU").with_params(
         **parameters).solve(number_runs)
 
     # -----------
@@ -385,9 +366,8 @@ def fujistu_example_qubo(config):
     answer.print_solutions_nice()
 
 
-def fujistu_example_ising(config):
-    """ Fujitsu DAU can only solve QUBOs. Translate Ising to QUBO and send the QUBO to the Fujitsu DAU. There may
-    be an offset, that have to be applied to the energies to obtain the correct Ising energies.
+def fujistuCPU_example_ising(config):
+    """ Solve the Ising example with the Fujitsu CPU Simulator.
 
     Parameters
     ----------
@@ -395,14 +375,13 @@ def fujistu_example_ising(config):
         The config object that contains the users configuration data
     """
 
-    solver = "CPU"  # CPU or DAU
     number_runs = 16  # count of independent annealing runs
 
     # example parameters for using the CPU solver
-    parameters_cpu = {
+    parameters = {
         "optimization_method": "annealing",
         # The CPU solver offers "annealing" and "parallel_tempering". Please specify which method you want to use.
-        "number_iterations": 500,  # total number of iterations per run
+        "number_iterations": 1000,  # total number of iterations per run
         "temperature_start": 1000.0,  # start temperature as float value
         "temperature_end": 1.0,  # end temperature as float value or None
         "temperature_mode": 0,  # 0, 1, or 2 to define the cooling curve
@@ -414,26 +393,186 @@ def fujistu_example_ising(config):
         # "guidance_config": {1: 1, 0: 1}  # Specifies an initial value for each variable
     }
 
-    # example parameters for using the DAU solver
-    parameters_dau = {
+    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("fujitsu").with_solver(
+        "CPU").with_params(**parameters).solve(number_runs)
+
+    # -----------
+    # These calls return arrays containing the raw information in lists
+    # -----------
+    # answer.solutions
+    # answer.energies
+    # answer.num_occurrences
+    # answer.apply_energy_offset(offset)
+    # answer.print_energies()
+    # -----------
+    # These functions will print the received information in different ways
+    # -----------
+    # answer.print_solutions()
+    # answer.print_energies()
+    # answer.print_num_occurrences()
+    answer.print_solutions_nice()
+
+
+def fujistuDAv2_example_qubo(config):
+    """ Solve the QUBO example with the Fujitsu DAv2.
+
+    Parameters
+    ----------
+    config
+        The config object that contains the users configuration data
+    """
+
+    number_runs = 16  # count of independent annealing runs
+
+    # example parameters for using the CPU solver
+    parameters = {
+        "optimization_method": "annealing",
+        # The CPU solver offers "annealing" and "parallel_tempering". Please specify which method you want to use.
+        "number_iterations": 1000000,  # total number of iterations per run
+        "temperature_start": 1000.0,  # start temperature as float value
+        "temperature_end": 1.0,  # end temperature as float value or None
+        "temperature_mode": 0,  # 0, 1, or 2 to define the cooling curve
+        # 0: reduce temperature by factor (1-temperature_decay) every temperature_interval steps
+        # 1: reduce temperature by factor (1-temperature_decay*temperature) every temperature_interval steps
+        # 2: reduce temperature by factor (1-temperature_decay*temperature^2) every temperature_interval steps
+        "temperature_decay": 0.001,  # decay per step if temperature_end is None
+        "temperature_interval": 100,  # number of iterations keeping temperature constant
+        # "guidance_config": {1: 1, 0: 1}  # Specifies an initial value for each variable
+    }
+
+    answer = Problem.Qubo(config, example_qubo).with_platform("fujitsu").with_solver("DAv2").with_params(
+        **parameters).solve(number_runs)
+
+    # -----------
+    # These calls return arrays containing the raw information in lists
+    # -----------
+    # answer.solutions
+    # answer.energies
+    # answer.num_occurrences
+
+    # -----------
+    # These functions will print the received information in different ways
+    # -----------
+    # answer.print_solutions()
+    # answer.print_energies()
+    # answer.print_num_occurrences()
+    answer.print_solutions_nice()
+
+
+def fujistuDAv2_example_ising(config):
+    """ Fujitsu DAv2 can only solve QUBOs. The Ising will be translated to QUBO before it is sent to the Fujitsu DAU
+    using the dimod.ising_to_qubo function.
+
+    Parameters
+    ----------
+    config
+        The config object that contains the users configuration data
+    """
+
+    number_runs = 16  # count of independent annealing runs
+
+    # example parameters for using the CPU solver
+    parameters = {
+        "optimization_method": "annealing",
+        # The CPU solver offers "annealing" and "parallel_tempering". Please specify which method you want to use.
+        "number_iterations": 1000000,  # total number of iterations per run
+        "temperature_start": 1000.0,  # start temperature as float value
+        "temperature_end": 1.0,  # end temperature as float value or None
+        "temperature_mode": 0,  # 0, 1, or 2 to define the cooling curve
+        # 0: reduce temperature by factor (1-temperature_decay) every temperature_interval steps
+        # 1: reduce temperature by factor (1-temperature_decay*temperature) every temperature_interval steps
+        # 2: reduce temperature by factor (1-temperature_decay*temperature^2) every temperature_interval steps
+        "temperature_decay": 0.001,  # decay per step if temperature_end is None
+        "temperature_interval": 100,  # number of iterations keeping temperature constant
+        # "guidance_config": {1: 1, 0: 1}  # Specifies an initial value for each variable
+    }
+
+    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("fujitsu").with_solver(
+        "DAv2").with_params(**parameters).solve(number_runs)
+
+    # -----------
+    # These calls return arrays containing the raw information in lists
+    # -----------
+    # answer.solutions
+    # answer.energies
+    # answer.num_occurrences
+    # answer.apply_energy_offset(offset)
+    # answer.print_energies()
+    # -----------
+    # These functions will print the received information in different ways
+    # -----------
+    # answer.print_solutions()
+    # answer.print_energies()
+    # answer.print_num_occurrences()
+    answer.print_solutions_nice()
+
+
+def fujistuDAv3_example_qubo(config):
+    """ Solve the QUBO example with the Fujitsu DAv3.
+
+    Parameters
+    ----------
+    config
+        The config object that contains the users configuration data
+    """
+
+    number_runs = 16  # count of independent annealing runs
+
+    # example parameters
+    parameters = {
         "num_output_solution": 1,  # Maximal number of the best solutions returned by each optimization process.
         # The total number of solutions is num_output_solution * number_runs
         # Default: 5, Min: 1, Max: 1024
-        "time_limit_sec": 15,  # Maximum running time of DA in seconds. Default: 10, Min: 1, Max: 1800
+        "time_limit_sec": 10,  # Maximum running time of DA in seconds. Default: 10, Min: 1, Max: 1800
         "target_energy": None  # Threshold energy for fast exit.
         # Default: None, Min: -99999999999, Max: +99999999999
         # "guidance_config": {1: 1, 0: 1}  # Specifies an initial value for each variable
     }
 
-    if solver == "DAU":
-        parameters = parameters_dau
-    elif solver == "CPU":
-        parameters = parameters_cpu
-    else:
-        raise InvalidFujitsuSolverException(solver)
+    answer = Problem.Qubo(config, example_qubo).with_platform("fujitsu").with_solver("DAv3").with_params(
+        **parameters).solve(number_runs)
+
+    # -----------
+    # These calls return arrays containing the raw information in lists
+    # -----------
+    # answer.solutions
+    # answer.energies
+    # answer.num_occurrences
+
+    # -----------
+    # These functions will print the received information in different ways
+    # -----------
+    # answer.print_solutions()
+    # answer.print_energies()
+    # answer.print_num_occurrences()
+    answer.print_solutions_nice()
+
+
+def fujistuDAv3_example_ising(config):
+    """ Fujitsu DAv3 can only solve QUBOs. The Ising will be translated to QUBO before it is sent to the Fujitsu DAU
+    using the dimod.ising_to_qubo function.
+
+    Parameters
+    ----------
+    config
+        The config object that contains the users configuration data
+    """
+
+    number_runs = 16  # count of independent annealing runs
+
+    # example parameters
+    parameters = {
+        "num_output_solution": 1,  # Maximal number of the best solutions returned by each optimization process.
+        # The total number of solutions is num_output_solution * number_runs
+        # Default: 5, Min: 1, Max: 1024
+        "time_limit_sec": 10,  # Maximum running time of DA in seconds. Default: 10, Min: 1, Max: 1800
+        "target_energy": None  # Threshold energy for fast exit.
+        # Default: None, Min: -99999999999, Max: +99999999999
+        # "guidance_config": {1: 1, 0: 1}  # Specifies an initial value for each variable
+    }
 
     answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("fujitsu").with_solver(
-        solver).with_params(**parameters).solve(number_runs)
+        "DAv3").with_params(**parameters).solve(number_runs)
 
     # -----------
     # These calls return arrays containing the raw information in lists
