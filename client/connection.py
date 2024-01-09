@@ -246,7 +246,8 @@ class Connection:
                     answer = Response.QBSolveResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "DWaveSolver":
                     answer = Response.DWaveResponse(answer["solver_details"]["answer"])
-                elif answer["solver"] == "FujitsuDAUSolver":
+                elif answer["solver"] == "FujitsuDAv2Solver" or answer["solver"] == "FujitsuDAv3Solver" or answer[
+                    "solver"] == "FujitsuCPUSolver":
                     answer = Response.FujitsuDAUResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "GeneticSolver":
                     answer = Response.GeneticResponse(answer["solver_details"]["answer"])
@@ -295,7 +296,8 @@ class Connection:
                     answer = Response.QBSolveResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "DWaveSolver":
                     answer = Response.DWaveResponse(answer["solver_details"]["answer"])
-                elif answer["solver"] == "FujitsuDAUSolver":
+                elif answer["solver"] == "FujitsuDAv2Solver" or answer["solver"] == "FujitsuDAv3Solver" or answer[
+                    "solver"] == "FujitsuCPUSolver":
                     answer = Response.FujitsuDAUResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "TabuSolver":
                     answer = Response.TabuResponse(answer["solver_details"]["answer"])
