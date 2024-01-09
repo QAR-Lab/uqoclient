@@ -87,7 +87,7 @@ def qbsolv_example_ising(config):
 
 
 def dwave_example_qubo(config):
-    """Solve the QUBO example with the quantum solver 'DW_2000Q_6' from DWave.
+    """Solve the QUBO example with the quantum solver 'Advantage_system4.1' from DWave.
 
     Parameters
     ----------
@@ -95,7 +95,7 @@ def dwave_example_qubo(config):
         The config object that contains the users configuration data
     """
 
-    answer = Problem.Qubo(config, example_qubo).with_platform("dwave").with_solver("DW_2000Q_6").solve(1)
+    answer = Problem.Qubo(config, example_qubo).with_platform("dwave").with_solver("Advantage_system4.1").solve(1)
 
     # -----------
     # These calls return arrays containing the raw information in lists
@@ -114,7 +114,7 @@ def dwave_example_qubo(config):
 
 
 def dwave_example_ising(config):
-    """Solve the Ising example with the quantum solver 'DW_2000Q_6' from DWave.
+    """Solve the Ising example with the quantum solver 'Advantage_system4.1' from DWave.
 
     Parameters
     ----------
@@ -123,7 +123,7 @@ def dwave_example_ising(config):
     """
 
     answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("dwave") \
-        .with_solver("DW_2000Q_6").solve(1)
+        .with_solver("Advantage_system4.1").solve(1)
 
     # -----------
     # These calls return arrays containing the raw information in lists
@@ -170,8 +170,8 @@ def graph_coloring_example(config):
 
 
 def find_chimera_embedding_example(config):
-    """Find a possible Chimera embedding by calling the DW_2000Q_6 solver from DWaveand save it to embedding.pdf. """
-    problem = Problem.Qubo(config, example_qubo).with_platform("dwave").with_solver("DW_2000Q_6")
+    """Find a possible Chimera embedding by calling the Advantage_system4.1 solver from DWave and save it to embedding.pdf. """
+    problem = Problem.Qubo(config, example_qubo).with_platform("dwave").with_solver("Advantage_system4.1")
     # Note: If you generate an embedding via problem.find_chimera_embedding(), the embedding will be saved in the
     #       variable problem.embedding - you can directly access, view and save it.
     problem.find_chimera_embedding()
