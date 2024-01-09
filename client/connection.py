@@ -321,6 +321,23 @@ class Connection:
         answer = self.send_message(solve_message)
         return list(map(lambda x: str(x), answer["solver_details"]["details"]))
 
+        # ----------------------- GET EDGE LIST ----------------------- #
+
+    def get_edgelist(self, solver):
+        solve_message = {}
+        solve_message["authentication"] = self.get_authentication_message()
+        solve_message["task"] = "dwave_info"
+        solve_message["task_details"] = {"platform": "dwave", "type": "get_solver_edges",
+                                             "params": {"pref_solver": solver}}
+
+        answer = self.send_message(solve_message)
+
+        edgelist = answer["solver_details"]["details"]
+        file = 'edgelist_{0}.txt'.format(solver)
+        with open(file, 'w') as f:
+            f.write(str(edgelist))
+        return edgelist
+
     # ----------------------- GET AVAILABLE PLATFORMS ----------------------- #
 
     def get_available_platforms(self):
