@@ -249,6 +249,8 @@ class Connection:
                 elif answer["solver"] == "FujitsuDAv2Solver" or answer["solver"] == "FujitsuDAv3Solver" or answer[
                     "solver"] == "FujitsuCPUSolver":
                     answer = Response.FujitsuDAUResponse(answer["solver_details"]["answer"])
+                elif answer["solver"] == "LocalBeamSearchSolver":
+                    answer = Response.LocalBeamSearchResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "GeneticSolver":
                     answer = Response.GeneticResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "TabuSolver":
@@ -299,6 +301,8 @@ class Connection:
                 elif answer["solver"] == "FujitsuDAv2Solver" or answer["solver"] == "FujitsuDAv3Solver" or answer[
                     "solver"] == "FujitsuCPUSolver":
                     answer = Response.FujitsuDAUResponse(answer["solver_details"]["answer"])
+                elif answer["solver"] == "LocalBeamSearchSolver":
+                    answer = Response.LocalBeamSearchResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "TabuSolver":
                     answer = Response.TabuResponse(answer["solver_details"]["answer"])
                 elif answer["solver"] == "LeapHybridSolver":
@@ -504,6 +508,8 @@ class Connection:
                 raise InvalidPlatformException()
             elif error_type == "FujitsuException":
                 raise FujitsuException(answer["error_details"])
+            elif error_type == "LocalBeamSearchException":
+                raise LocalBeamSearchException(answer["error_details"])
             elif error_type == "TabuException":
                 raise TabuException(answer["error_details"])
             elif error_type == "LeapHybridException":

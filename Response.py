@@ -81,6 +81,14 @@ class FujitsuDAUResponse(Response):
         self.timing = self.sampleset.info["timing"]
 
 
+class LocalBeamSearchResponse(Response):
+    """Response that represents a reply from the LocalBeamSearch Solver. """
+    
+    def __init__(self, local_beam_search_anwser):
+        sampleset = SampleSet.from_serializable(local_beam_search_anwser)
+        Response.__init__(self, sampleset)
+
+
 class GeneticResponse(Response):
     """Response that represents a reply from the Genetic Solver. """
 

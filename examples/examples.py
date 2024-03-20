@@ -597,6 +597,42 @@ def fujistuDAv3_example_ising(config):
     answer.print_solutions_nice()
 
 
+def local_beam_search_example_qubo(config):
+    """Solve the QUBO example with a local beam search.
+
+    Parameters
+    ----------
+    config
+        The config object that contains the users configuration data
+    """
+    parameters = {
+        "beam_size": 2,       # (int, optional): number of initial random generated states and number of best states
+                              # being stored each level. Defaults to 10
+        "iterations_limit": 5 # (int, optional): number of levels the search tree should have. By default (set to 0),
+                              # the search continues until no better states are found
+    }
+    answer = Problem.Qubo(config, example_qubo).with_platform("local_beam_search").with_params(**parameters).solve(100)
+    answer.print_solutions_nice()
+
+
+def local_beam_search_example_ising(config):
+    """Solve the QUBO example with a local beam search.
+
+    Parameters
+    ----------
+    config
+        The config object that contains the users configuration data
+    """
+    parameters = {
+        "beam_size": 2,       # (int, optional): number of initial random generated states and number of best states
+                              # being stored each level. Defaults to 10
+        "iterations_limit": 5 # (int, optional): number of levels the search tree should have. By default (set to 0),
+                              # the search continues until no better states are found
+    }
+    answer = Problem.Ising(config, example_ising_h, example_ising_J).with_platform("local_beam_search").with_params(**parameters).solve(100)
+    answer.print_solutions_nice()
+
+
 def genetic_example_qubo(config):
     """
         Required parameters:
@@ -893,6 +929,7 @@ def tabu_example_ising(config):
     # answer.print_num_occurrences()
     answer.print_solutions_nice()
 
+
 def dwave_leaphybrid_example_qubo(config):
     answer = Problem.Qubo(config, example_qubo).with_platform("leaphybrid").solve(1)
 
@@ -928,5 +965,4 @@ def dwave_leaphybrid_example_ising(config):
     # answer.print_solutions()
     # answer.print_energies()
     # answer.print_num_occurrences()
-
     answer.print_solutions_nice()
